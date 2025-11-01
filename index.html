@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rochester Regional Health DataBI Project — Cancer Incidence</title>
-<link rel="preconnect" href="https://public.tableau.com">
+<link rel="preconnect" href="https://public.tableau.com" crossorigin>
 <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 <style>
   :root{
-    --rit-orange:#F76902;     /* RIT Orange (Pantone 1505C) */
-    --rit-black:#000000;      /* Black */
-    --rit-text:#212519;       /* Text black from web guide */
-    --rit-gray:#E9ECEF;       /* Light gray neutral */
-    --rit-mid:#727578;        /* Mid gray text */
+    --rit-orange:#F76902;
+    --rit-black:#000000;
+    --rit-text:#212519;
+    --rit-gray:#E9ECEF;
+    --rit-mid:#727578;
     --bg:#fafafa;
   }
   *{box-sizing:border-box}
@@ -23,10 +23,7 @@
 
   /* Welcome cover */
   .cover{
-    min-height:100vh;
-    display:grid;
-    grid-template-rows:auto 1fr auto;
-    background:
+    min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;background:
       radial-gradient(1200px 800px at 90% -10%, rgba(247,105,2,.10), transparent 60%),
       radial-gradient(900px 600px at -10% 90%, rgba(0,0,0,.05), transparent 55%);
   }
@@ -34,44 +31,31 @@
   .brand{display:flex;align-items:center;gap:.75rem}
   .brand .mark{width:44px;height:44px;background:var(--rit-orange);border-radius:8px}
   .brand h1{margin:0;font-size:1.25rem;letter-spacing:.02em}
-
   .hero{max-width:1100px;margin:0 auto;padding:2rem 1rem 3rem;display:grid;gap:1.25rem}
   .hero h2{margin:0;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.15}
   .hero p{margin:0;color:var(--rit-mid);max-width:60ch}
-  .cta{
-    display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem
-  }
-  .btn{
-    appearance:none;border:0;border-radius:999px;padding:.75rem 1.1rem;
-    font-weight:600;cursor:pointer;transition:transform .06s ease, box-shadow .2s ease
-  }
+  .cta{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem}
+  .btn{appearance:none;border:0;border-radius:999px;padding:.75rem 1.1rem;font-weight:600;cursor:pointer;transition:transform .06s ease, box-shadow .2s ease}
   .btn-primary{background:var(--rit-orange);color:white;box-shadow:0 6px 16px rgba(247,105,2,.25)}
   .btn-primary:hover{transform:translateY(-1px)}
   .btn-ghost{background:transparent;color:var(--rit-orange)}
   .foot{max-width:1100px;margin:0 auto;padding:1rem;color:var(--rit-mid);font-size:.9rem}
 
-  /* App shell after Start presentation */
+  /* App shell */
   .app{display:none;min-height:100vh}
   .app header{background:white;border-bottom:1px solid var(--rit-gray)}
   .app .wrap{max-width:1200px;margin:0 auto;padding:1rem}
   .app .title{display:flex;align-items:center;gap:.75rem}
   .app .dot{width:20px;height:20px;background:var(--rit-orange);border-radius:6px}
   nav.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
-  .tab{
-    background:white;border:1px solid var(--rit-gray);border-radius:999px;padding:.5rem .9rem;
-    cursor:pointer;font-weight:600
-  }
+  .tab{background:white;border:1px solid var(--rit-gray);border-radius:999px;padding:.5rem .9rem;cursor:pointer;font-weight:600}
   .tab[aria-selected="true"]{background:var(--rit-orange);border-color:var(--rit-orange);color:white}
-  main.app-main{max-width:1200px;margin:0 auto;padding:1rem;display:grid;gap:1rem}
+  .tab:focus-visible{box-shadow:0 0 0 3px rgba(247,105,2,.35)}
+  main.app-main{max-width:1200px;margin:0 auto;padding:1rem}
   .panel{background:white;border:1px solid var(--rit-gray);border-radius:16px;padding:1rem}
-  .grid{display:grid;gap:1rem}
-  @media(min-width:1000px){ .grid{grid-template-columns:2fr 1fr} }
-
-  /* Tableau embed element */
-  tableau-viz{
-    width:100%; height:70vh; border:0; border-radius:12px; display:block;
-    background:white
-  }
+  .panel h3{margin-top:0}
+  .viz{margin-bottom:.75rem}
+  tableau-viz{width:100%;height:70vh;border:0;border-radius:12px;display:block;background:white}
   .note{color:var(--rit-mid);font-size:.95rem}
   .kicker{font-size:.85rem;color:var(--rit-mid);text-transform:uppercase;letter-spacing:.06em}
 </style>
@@ -89,7 +73,7 @@
 
   <div class="hero">
     <span class="kicker">RRH incidence insights</span>
-    <h2>An exploration of cancer incidences and causes across the United States and New York.</h2>
+    <h2>An exploration of cancer incidences and causes across the United States and New York</h2>
     <p>This site explores patterns for cancer incidence using interactive Tableau dashboards.</p>
     <div class="cta">
       <button id="start" class="btn btn-primary">Start presentation</button>
@@ -97,7 +81,7 @@
     </div>
   </div>
 
-  <footer class="foot">Nina Gampe - MGIS.650.03</footer>
+  <footer class="foot">Nina Gampe — MGIS.650.03</footer>
 </section>
 
 <!-- App with tabs -->
@@ -122,9 +106,9 @@
 
   <main class="app-main">
     <!-- Panel 1 -->
-    <section id="panel-1" class="panel grid" role="tabpanel" aria-labelledby="tab-1">
-      <div>
-        <h3 style="margin-top:0">Which regions of the country are most prone to cancer?</h3>
+    <section id="panel-1" class="panel" role="tabpanel" aria-labelledby="tab-1">
+      <h3>Which regions of the country are most prone to cancer?</h3>
+      <div class="viz">
         <tableau-viz
           id="viz-national"
           src="https://public.tableau.com/views/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000"
@@ -132,16 +116,13 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <aside class="note">
-        Use hover to see values and click a state to focus the map. Keep the color scale consistent across other views for comparability.
-      </aside>
+      <p class="note">Hover to see values. Select a state to focus the view. Keep the color scale consistent across other views for comparability.</p>
     </section>
 
     <!-- Panel 2 -->
-    <section id="panel-2" class="panel grid" role="tabpanel" aria-labelledby="tab-2" hidden>
-      <div>
-        <h3 style="margin-top:0">How do factors vary by region</h3>
-        <div class="note">Embed your Regional Comparison dashboard link when ready.</div>
+    <section id="panel-2" class="panel" role="tabpanel" aria-labelledby="tab-2" hidden>
+      <h3>How do factors affecting incidence vary by region?</h3>
+      <div class="viz">
         <tableau-viz
           id="viz-regional"
           src="PASTE_YOUR_REGIONAL_COMPARISON_VIZ_URL"
@@ -149,16 +130,13 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <aside class="note">
-        Suggested content: scatter of incidence vs income or smoking rate with region encoding, plus regional averages.
-      </aside>
+      <p class="note">Discuss relationships with income, smoking, age structure, or access. Call out regions that deviate from national trends.</p>
     </section>
 
     <!-- Panel 3 -->
-    <section id="panel-3" class="panel grid" role="tabpanel" aria-labelledby="tab-3" hidden>
-      <div>
-        <h3 style="margin-top:0">New York State Focus</h3>
-        <div class="note">Embed your New York dashboard link when ready.</div>
+    <section id="panel-3" class="panel" role="tabpanel" aria-labelledby="tab-3" hidden>
+      <h3>New York State focus</h3>
+      <div class="viz">
         <tableau-viz
           id="viz-ny"
           src="PASTE_YOUR_NEW_YORK_VIZ_URL"
@@ -166,56 +144,69 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <aside class="note">
-        Add KPIs for state average and top areas. Summarize actionable drivers for clinicians and operations.
-      </aside>
+      <p class="note">Summarize hotspots, contributing factors, and priorities for clinical and community action.</p>
     </section>
 
     <!-- Panel 4 -->
     <section id="panel-4" class="panel" role="tabpanel" aria-labelledby="tab-4" hidden>
-      <h3 style="margin-top:0">Project Summary</h3>
-      <p>Outline methods, data sources, key findings, and recommendations. Link to sources and note constraints.</p>
-      <ul>
-        <li>Data and transformations, including incidence per 100,000 and region grouping.</li>
-        <li>Findings from national and regional analyses.</li>
-        <li>New York insights and priorities for action.</li>
-        <li>Limitations and next steps.</li>
-      </ul>
+      <h3>Project summary</h3>
+      <p class="note">Methods, data sources, key findings, recommendations, limitations, and next steps.</p>
     </section>
   </main>
 </section>
 
 <script>
-  // Start button transitions from cover to app
-  const startBtn = document.getElementById('start');
+  // Show app when starting or when hash is present
   const cover = document.getElementById('cover');
   const app = document.getElementById('site');
-  startBtn?.addEventListener('click', () => {
+  function showApp(){
     cover.style.display = 'none';
     app.style.display = 'block';
-    document.getElementById('tab-1').focus();
-    location.hash = '#site';
+  }
+  document.getElementById('start')?.addEventListener('click', () => {
+    showApp();
+    activateTab('tab-1');
+    history.replaceState(null, '', '#site');
   });
+  if (location.hash === '#site' || location.hash.startsWith('#tab=')) { showApp(); }
 
-  // Tabs behavior
+  // Tabs: one panel visible
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
   const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
-  function activate(id){
-    tabs.forEach(t => t.setAttribute('aria-selected', String(t.id === id)));
-    panels.forEach(p => p.hidden = ('panel-' + id.split('-')[1]) !== p.id);
+
+  function activateTab(tabId){
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.id === tabId)));
+    const targetPanelId = 'panel-' + tabId.split('-')[1];
+    panels.forEach(p => { p.hidden = p.id !== targetPanelId; });
   }
-  tabs.forEach(t => t.addEventListener('click', () => activate(t.id)));
+
+  // Click handlers
+  tabs.forEach(t => t.addEventListener('click', () => {
+    activateTab(t.id);
+    history.replaceState(null, '', '#tab=' + t.id.split('-')[1]);
+  }));
+
   // Keyboard support
   tabs.forEach((t, i) => t.addEventListener('keydown', e => {
-    const k = e.key;
-    if(k === 'ArrowRight' || k === 'ArrowLeft'){
-      const dir = k === 'ArrowRight' ? 1 : -1;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      const dir = e.key === 'ArrowRight' ? 1 : -1;
       const next = tabs[(i + dir + tabs.length) % tabs.length];
       next.focus();
-      activate(next.id);
+      activateTab(next.id);
+      history.replaceState(null, '', '#tab=' + next.id.split('-')[1]);
       e.preventDefault();
     }
   }));
+
+  // Deep link to specific tab with #tab=2 etc.
+  if (location.hash.startsWith('#tab=')) {
+    const n = location.hash.split('=')[1];
+    const target = document.getElementById('tab-' + n);
+    if (target) activateTab(target.id);
+  }
+</script>
+</body>
+</html>
 
   // If user jumps directly with #site
   if(location.hash === '#site'){ cover.style.display = 'none'; app.style.display = 'block'; }
