@@ -1,49 +1,224 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RRH Cancer Incidence Map</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: #f7f7f7;
-      color: #111;
-      margin: 0;
-    }
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.75rem;
-    }
-    p {
-      color: #555;
-      margin-top: .25rem;
-    }
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-    .viz-wrap {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    footer {
-      text-align: center;
-      font-size: .8rem;
-      color: #777;
-      padding: 1rem;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIT Data Discovery — Cancer Incidence</title>
+<link rel="preconnect" href="https://public.tableau.com">
+<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+<style>
+  :root{
+    --rit-orange:#F76902;     /* RIT Orange (Pantone 1505C) */
+    --rit-black:#000000;      /* Black */
+    --rit-text:#212519;       /* Text black from web guide */
+    --rit-gray:#E9ECEF;       /* Light gray neutral */
+    --rit-mid:#727578;        /* Mid gray text */
+    --bg:#fafafa;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--rit-text);background:var(--bg)}
+  a{color:var(--rit-orange);text-decoration:none}
+  a:focus,button:focus{outline:3px solid var(--rit-orange);outline-offset:2px}
+
+  /* Welcome cover */
+  .cover{
+    min-height:100vh;
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    background:
+      radial-gradient(1200px 800px at 90% -10%, rgba(247,105,2,.10), transparent 60%),
+      radial-gradient(900px 600px at -10% 90%, rgba(0,0,0,.05), transparent 55%);
+  }
+  .cover header{max-width:1100px;margin:0 auto;padding:2rem 1rem}
+  .brand{display:flex;align-items:center;gap:.75rem}
+  .brand .mark{width:44px;height:44px;background:var(--rit-orange);border-radius:8px}
+  .brand h1{margin:0;font-size:1.25rem;letter-spacing:.02em}
+
+  .hero{max-width:1100px;margin:0 auto;padding:2rem 1rem 3rem;display:grid;gap:1.25rem}
+  .hero h2{margin:0;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.15}
+  .hero p{margin:0;color:var(--rit-mid);max-width:60ch}
+  .cta{
+    display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem
+  }
+  .btn{
+    appearance:none;border:0;border-radius:999px;padding:.75rem 1.1rem;
+    font-weight:600;cursor:pointer;transition:transform .06s ease, box-shadow .2s ease
+  }
+  .btn-primary{background:var(--rit-orange);color:white;box-shadow:0 6px 16px rgba(247,105,2,.25)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--rit-orange)}
+  .foot{max-width:1100px;margin:0 auto;padding:1rem;color:var(--rit-mid);font-size:.9rem}
+
+  /* App shell after Start presentation */
+  .app{display:none;min-height:100vh}
+  .app header{background:white;border-bottom:1px solid var(--rit-gray)}
+  .app .wrap{max-width:1200px;margin:0 auto;padding:1rem}
+  .app .title{display:flex;align-items:center;gap:.75rem}
+  .app .dot{width:20px;height:20px;background:var(--rit-orange);border-radius:6px}
+  nav.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+  .tab{
+    background:white;border:1px solid var(--rit-gray);border-radius:999px;padding:.5rem .9rem;
+    cursor:pointer;font-weight:600
+  }
+  .tab[aria-selected="true"]{background:var(--rit-orange);border-color:var(--rit-orange);color:white}
+  main.app-main{max-width:1200px;margin:0 auto;padding:1rem;display:grid;gap:1rem}
+  .panel{background:white;border:1px solid var(--rit-gray);border-radius:16px;padding:1rem}
+  .grid{display:grid;gap:1rem}
+  @media(min-width:1000px){ .grid{grid-template-columns:2fr 1fr} }
+
+  /* Tableau embed element */
+  tableau-viz{
+    width:100%; height:70vh; border:0; border-radius:12px; display:block;
+    background:white
+  }
+  .note{color:var(--rit-mid);font-size:.95rem}
+  .kicker{font-size:.85rem;color:var(--rit-mid);text-transform:uppercase;letter-spacing:.06em}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Rochester Regional Health: U.S. Cancer Incidence</h1>
-    <p>Interactive map of average canc
 
+<!-- Welcome cover -->
+<section class="cover" id="cover">
+  <header>
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <h1>RIT Data Discovery</h1>
+    </div>
+  </header>
+
+  <div class="hero">
+    <span class="kicker">Cancer incidence insights</span>
+    <h2>Welcome to the project site</h2>
+    <p>This site explores national patterns and New York specifics for cancer incidence using interactive Tableau dashboards and a short narrative you can revisit at any time.</p>
+    <div class="cta">
+      <button id="start" class="btn btn-primary">Start presentation</button>
+      <a href="#site" class="btn btn-ghost">Skip to tabs</a>
+    </div>
+  </div>
+
+  <footer class="foot">Theme uses RIT Orange and web neutrals per brand guidance. :contentReference[oaicite:1]{index=1}</footer>
+</section>
+
+<!-- App with tabs -->
+<section class="app" id="site" aria-label="Presentation">
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div class="dot" aria-hidden="true"></div>
+        <div>
+          <div class="kicker">Rochester Regional Health</div>
+          <h2 style="margin:.2rem 0 0;font-size:1.35rem">Cancer Incidence Data Discovery</h2>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Questions">
+        <button class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">National overview</button>
+        <button class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false">Regional drivers</button>
+        <button class="tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false">New York focus</button>
+        <button class="tab" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false">Project summary</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- Panel 1 -->
+    <section id="panel-1" class="panel grid" role="tabpanel" aria-labelledby="tab-1">
+      <div>
+        <h3 style="margin-top:0">Which regions of the country are most prone to cancer</h3>
+        <tableau-viz
+          id="viz-national"
+          src="https://public.tableau.com/views/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000"
+          toolbar="bottom"
+          hide-tabs>
+        </tableau-viz>
+      </div>
+      <aside class="note">
+        Use hover to see values and click a state to focus the map. Keep the color scale consistent across other views for comparability.
+      </aside>
+    </section>
+
+    <!-- Panel 2 -->
+    <section id="panel-2" class="panel grid" role="tabpanel" aria-labelledby="tab-2" hidden>
+      <div>
+        <h3 style="margin-top:0">How do factors vary by region</h3>
+        <div class="note">Embed your Regional Comparison dashboard link when ready.</div>
+        <tableau-viz
+          id="viz-regional"
+          src="PASTE_YOUR_REGIONAL_COMPARISON_VIZ_URL"
+          toolbar="bottom"
+          hide-tabs>
+        </tableau-viz>
+      </div>
+      <aside class="note">
+        Suggested content: scatter of incidence vs income or smoking rate with region encoding, plus regional averages.
+      </aside>
+    </section>
+
+    <!-- Panel 3 -->
+    <section id="panel-3" class="panel grid" role="tabpanel" aria-labelledby="tab-3" hidden>
+      <div>
+        <h3 style="margin-top:0">New York State focus</h3>
+        <div class="note">Embed your New York dashboard link when ready.</div>
+        <tableau-viz
+          id="viz-ny"
+          src="PASTE_YOUR_NEW_YORK_VIZ_URL"
+          toolbar="bottom"
+          hide-tabs>
+        </tableau-viz>
+      </div>
+      <aside class="note">
+        Add KPIs for state average and top areas. Summarize actionable drivers for clinicians and operations.
+      </aside>
+    </section>
+
+    <!-- Panel 4 -->
+    <section id="panel-4" class="panel" role="tabpanel" aria-labelledby="tab-4" hidden>
+      <h3 style="margin-top:0">Project summary</h3>
+      <p>Outline methods, data sources, key findings, and recommendations. Link to sources and note constraints.</p>
+      <ul>
+        <li>Data and transformations, including incidence per 100,000 and region grouping.</li>
+        <li>Findings from national and regional analyses.</li>
+        <li>New York insights and priorities for action.</li>
+        <li>Limitations and next steps.</li>
+      </ul>
+    </section>
+  </main>
+</section>
+
+<script>
+  // Start button transitions from cover to app
+  const startBtn = document.getElementById('start');
+  const cover = document.getElementById('cover');
+  const app = document.getElementById('site');
+  startBtn?.addEventListener('click', () => {
+    cover.style.display = 'none';
+    app.style.display = 'block';
+    document.getElementById('tab-1').focus();
+    location.hash = '#site';
+  });
+
+  // Tabs behavior
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+  function activate(id){
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.id === id)));
+    panels.forEach(p => p.hidden = ('panel-' + id.split('-')[1]) !== p.id);
+  }
+  tabs.forEach(t => t.addEventListener('click', () => activate(t.id)));
+  // Keyboard support
+  tabs.forEach((t, i) => t.addEventListener('keydown', e => {
+    const k = e.key;
+    if(k === 'ArrowRight' || k === 'ArrowLeft'){
+      const dir = k === 'ArrowRight' ? 1 : -1;
+      const next = tabs[(i + dir + tabs.length) % tabs.length];
+      next.focus();
+      activate(next.id);
+      e.preventDefault();
+    }
+  }));
+
+  // If user jumps directly with #site
+  if(location.hash === '#site'){ cover.style.display = 'none'; app.style.display = 'block'; }
+</script>
+</body>
+</html>
