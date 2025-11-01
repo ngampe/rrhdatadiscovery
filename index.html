@@ -5,42 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RRH Cancer Incidence Map</title>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-           background: #f7f7f7; color: #111; margin: 0; }
-    header { text-align: center; padding: 2rem 1rem 1rem; }
-    h1 { margin: 0; font-size: 1.75rem; }
-    p { color: #555; margin-top: .25rem; }
-    main { max-width: 1100px; margin: 0 auto; padding: 1rem; }
-    #viz-container { background: white; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #111;
+      margin: 0;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+    }
+    p {
+      color: #555;
+      margin-top: .25rem;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .viz-wrap {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    footer {
+      text-align: center;
+      font-size: .8rem;
+      color: #777;
+      padding: 1rem;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Rochester Regional Health: U.S. Cancer Incidence</h1>
-    <p>Interactive map of average cancer incidence rate by state (per 100,000).</p>
-  </header>
-  <main>
-    <div id="viz-container">
-      <div class="tableauPlaceholder" id="viz" style="position: relative">
-        <noscript>
-          <a href="#"><img alt="Tableau visualization" src="https://public.tableau.com/static/images/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000/1_rss.png" style="border: none" /></a>
-        </noscript>
-      </div>
-    </div>
-  </main>
-  <footer style="text-align:center; font-size:.8rem; color:#777; padding:1rem;">
-    Data source: United States Cancer Statistics (USCS). Visualization by Nina Gampe.
-  </footer>
-  <script type="text/javascript" src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
-  <script>
-    const url = "https://public.tableau.com/views/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000?:showVizHome=no&:embed=y";
-    const container = document.getElementById("viz");
-    const options = { hideTabs: true, hideToolbar: false, width: "100%", height: (0.56 * window.innerWidth) + "px" };
-    new tableau.Viz(container, url, options);
-    window.addEventListener('resize', () => {
-      const vizEl = document.querySelector('#viz iframe');
-      if (vizEl) vizEl.style.height = (0.56 * window.innerWidth) + "px";
-    });
-  </script>
-</body>
-</html>
+    <p>Interactive map of average canc
+
