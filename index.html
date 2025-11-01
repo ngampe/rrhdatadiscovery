@@ -10,11 +10,8 @@
     header { text-align: center; padding: 2rem 1rem 1rem; }
     h1 { margin: 0; font-size: 1.75rem; }
     p { color: #555; margin-top: .25rem; }
-    main { max-width: 1000px; margin: 0 auto; padding: 1rem; }
-    .frame-wrap { position: relative; width: 100%; padding-top: 56.25%; background: white;
-                  border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; }
-    iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    footer { text-align: center; font-size: .8rem; color: #777; padding: 1rem; }
+    main { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+    #viz-container { background: white; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; }
   </style>
 </head>
 <body>
@@ -23,14 +20,27 @@
     <p>Interactive map of average cancer incidence rate by state (per 100,000).</p>
   </header>
   <main>
-    <div class="frame-wrap">
-      <iframe title="U.S. Cancer Incidence Map"
-        src="https://public.tableau.com/app/profile/nina.gampe/viz/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000?publish=yes"
-        allowfullscreen></iframe>
+    <div id="viz-container">
+      <div class="tableauPlaceholder" id="viz" style="position: relative">
+        <noscript>
+          <a href="#"><img alt="Tableau visualization" src="https://public.tableau.com/static/images/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000/1_rss.png" style="border: none" /></a>
+        </noscript>
+      </div>
     </div>
   </main>
-  <footer>
+  <footer style="text-align:center; font-size:.8rem; color:#777; padding:1rem;">
     Data source: United States Cancer Statistics (USCS). Visualization by Nina Gampe.
   </footer>
+  <script type="text/javascript" src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+  <script>
+    const url = "https://public.tableau.com/views/DataDiscovery_17620201350030/AverageCancerIncidenceRatebyStateper100000?:showVizHome=no&:embed=y";
+    const container = document.getElementById("viz");
+    const options = { hideTabs: true, hideToolbar: false, width: "100%", height: (0.56 * window.innerWidth) + "px" };
+    new tableau.Viz(container, url, options);
+    window.addEventListener('resize', () => {
+      const vizEl = document.querySelector('#viz iframe');
+      if (vizEl) vizEl.style.height = (0.56 * window.innerWidth) + "px";
+    });
+  </script>
 </body>
 </html>
