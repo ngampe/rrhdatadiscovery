@@ -116,7 +116,7 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <p class="note"> Select a state to view mean cancer incidence per 100,000 people. The highest regions corespond with the northeastern region of the United States and additional outliers like Kentucky, Illinois, and Louisiana that are not within that region. Please note this Tableau visualization was also prepared and utilized within the Cancer Incidence Group Project. </p>
+      <p class="note">Select a state to view mean cancer incidence per 100,000 people. The highest regions correspond with the Northeastern United States and outliers like Kentucky, Illinois, and Louisiana. This visualization also appears in the Cancer Incidence Group Project.</p>
     </section>
 
     <!-- Panel 2 -->
@@ -125,7 +125,7 @@
       <div class="viz">
         <tableau-viz
           id="viz-regional"
-          src="PASTE_YOUR_REGIONAL_COMPARISON_VIZ_URL"
+          src="https://public.tableau.com/views/RegionalTrendFactors/RegionalTrendFactors"
           toolbar="bottom"
           hide-tabs>
         </tableau-viz>
@@ -139,7 +139,7 @@
       <div class="viz">
         <tableau-viz
           id="viz-ny"
-          src="PASTE_YOUR_NEW_YORK_VIZ_URL"
+          src="https://public.tableau.com/views/Book1_17621227134700/Dashboard1"
           toolbar="bottom"
           hide-tabs>
         </tableau-viz>
@@ -159,16 +159,25 @@
   // Show app when starting or when hash is present
   const cover = document.getElementById('cover');
   const app = document.getElementById('site');
-  function showApp(){
-    cover.style.display = 'none';
-    app.style.display = 'block';
-  }
+  function showApp(){ cover.style.display = 'none'; app.style.display = 'block'; }
+
+  // Tab slug mapping for readable links
+  const slugFor = {
+    'tab-1':'national-overview',
+    'tab-2':'regional-drivers',
+    'tab-3':'new-york-focus',
+    'tab-4':'project-summary'
+  };
+  const idForSlug = Object.fromEntries(Object.entries(slugFor).map(([k,v]) => [v,k]));
+
   document.getElementById('start')?.addEventListener('click', () => {
     showApp();
     activateTab('tab-1');
     history.replaceState(null, '', '#site');
   });
-  if (location.hash === '#site' || location.hash.startsWith('#tab=')) { showApp(); }
+  if (location.hash === '#site' || location.hash.startsWith('#tab=') || idForSlug[location.hash.slice(1)]) {
+    showApp();
+  }
 
   // Tabs: one panel visible
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
@@ -180,10 +189,11 @@
     panels.forEach(p => { p.hidden = p.id !== targetPanelId; });
   }
 
-  // Click handlers
+  // Click handlers with readable hashes
   tabs.forEach(t => t.addEventListener('click', () => {
     activateTab(t.id);
-    history.replaceState(null, '', '#tab=' + t.id.split('-')[1]);
+    const slug = slugFor[t.id] || ('tab=' + t.id.split('-')[1]);
+    history.replaceState(null, '', '#' + slug);
   }));
 
   // Keyboard support
@@ -193,20 +203,24 @@
       const next = tabs[(i + dir + tabs.length) % tabs.length];
       next.focus();
       activateTab(next.id);
-      history.replaceState(null, '', '#tab=' + next.id.split('-')[1]);
+      const slug = slugFor[next.id] || ('tab=' + next.id.split('-')[1]);
+      history.replaceState(null, '', '#' + slug);
       e.preventDefault();
     }
   }));
 
-  // Deep link to specific tab with #tab=2 etc.
+  // Deep link support: #tab=2 or #regional-drivers, etc.
   if (location.hash.startsWith('#tab=')) {
     const n = location.hash.split('=')[1];
     const target = document.getElementById('tab-' + n);
     if (target) activateTab(target.id);
+  } else if (location.hash && idForSlug[location.hash.slice(1)]) {
+    const target = document.getElementById(idForSlug[location.hash.slice(1)]);
+    if (target) activateTab(target.id);
+  } else {
+    // Default to first tab
+    activateTab('tab-1');
   }
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>
