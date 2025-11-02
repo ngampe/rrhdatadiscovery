@@ -56,8 +56,11 @@
   .panel h3{margin-top:0}
   .viz{margin-bottom:.75rem}
   tableau-viz{width:100%;height:70vh;border:0;border-radius:12px;display:block;background:white}
-  .note{color:var(--rit-mid);font-size:.95rem}
+  .note{color:var(--rit-mid);font-size:.95rem;line-height:1.5}
   .kicker{font-size:.85rem;color:var(--rit-mid);text-transform:uppercase;letter-spacing:.06em}
+  /* small helpers */
+  .subhead{margin:.5rem 0 .25rem;font-weight:600}
+  .bullets{margin:.25rem 0 0 1.1rem}
 </style>
 </head>
 <body>
@@ -73,7 +76,7 @@
 
   <div class="hero">
     <span class="kicker">RRH incidence insights</span>
-    <h2>An exploration of cancer incidences and causes across the United States and New York</h2>
+    <h2>An exploration of cancer incidence and causes across the United States and New York</h2>
     <p>This site explores patterns for cancer incidence using interactive Tableau dashboards.</p>
     <div class="cta">
       <button id="start" class="btn btn-primary">Start presentation</button>
@@ -115,7 +118,14 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <p class="note">Select a state to view mean cancer incidence per 100,000 people. The highest regions correspond with the Northeastern United States and outliers like Kentucky, Illinois, and Louisiana. This visualization also appears in the Cancer Incidence Group Project.</p>
+      <div class="note">
+        <div class="subhead">How to read this view</div>
+        <ul class="bullets">
+          <li>Select a state to view mean cancer incidence per 100,000 people.</li>
+          <li>Highest levels appear in the Northeastern United States, with outliers including Kentucky, Illinois, and Louisiana.</li>
+          <li>This visualization also appears in the Cancer Incidence Group Project.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- Panel 2 -->
@@ -129,7 +139,16 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <p class="note">This dashboard explores where cancer occurs and why. A map showing incidence rate by region on the state level shows the incidence rate versus the death rate. The larger the indicator the higher the death rate. This correlation shows higher death rates in higher incidence rates in most cases like NY and PA, but some outliers still have a high death rate for middle of the road incidence rates. Two correlation maps show monetary indicators like income and poverty vs the death and incidence rates. Texas stands out as a high poverty and high death rate but overall as well as high median income and high incidence rate. In both correlations, the northeast is visible on the upper right quadrant indicating a high relationship with these factors. Lastly, for context, a bar graph indicates the five year trend among states as well as their recent trends. </p>
+      <div class="note">
+        <div class="subhead">What this dashboard shows</div>
+        <ul class="bullets">
+          <li>A state-level map of incidence rate by region alongside death rate. Larger indicators represent higher death rates.</li>
+          <li>The correlation generally shows higher death rates where incidence is higher, such as in NY and PA, with some outliers at mid-level incidence.</li>
+          <li>Two correlation views relate income and poverty to death and incidence rates. Texas stands out with both high poverty and high death rate, and also with high median income and high incidence rate.</li>
+          <li>In both correlations, the Northeast appears in the upper-right quadrant, indicating a strong relationship with these factors.</li>
+          <li>A bar chart provides five-year trends by state and recent changes for context.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- Panel 3 -->
@@ -143,13 +162,58 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <p class="note">Summarize hotspots, contributing factors, and priorities for clinical and community action.</p>
+      <div class="note">
+        <div class="subhead">How to use this view</div>
+        <ul class="bullets">
+          <li>Identify hotspots and compare county-level patterns.</li>
+          <li>Review contributing factors and surface priorities for clinical and community action.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- Panel 4 -->
     <section id="panel-4" class="panel" role="tabpanel" aria-labelledby="tab-4" hidden>
-      <h3>Project summary</h3>
-      <p class="note">Methods, data sources, key findings, recommendations, limitations, and next steps.</p>
+      <h3>Project Summary</h3>
+
+      <div class="note">
+        <div class="subhead">Challenges</div>
+        <ul class="bullets">
+          <li>Finding factors relevant to cancer rates without redundancy.</li>
+          <li>Preprocessing to clean and verify values, including removal of nulls.</li>
+        </ul>
+
+        <div class="subhead">Data sources</div>
+        <ul class="bullets">
+          <li>United States Cancer Statistics and public repositories.</li>
+          <li>U.S. Census population statistics.</li>
+        </ul>
+
+        <div class="subhead">What the dashboards provide</div>
+        <ul class="bullets">
+          <li>Clarity on relationships within the dataset.</li>
+          <li>A starting point for health professionals to decide how to approach this issue.</li>
+        </ul>
+
+        <div class="subhead">Key findings</div>
+        <ul class="bullets">
+          <li>Cancer incidence is highest in the Northeastern United States, with notable outliers such as Kentucky, Illinois, and Louisiana.</li>
+          <li>High-income areas are not immune to incidence and death rates, indicating that access to medical intervention does not always reduce incidences or deaths.</li>
+          <li>New York is surrounded by other high-incidence states and shows a distributed rate across counties.</li>
+        </ul>
+
+        <div class="subhead">Recommendations</div>
+        <ul class="bullets">
+          <li>Use these visualizations to target high-incidence areas for prevention.</li>
+          <li>Create more preventive healthcare opportunities at lower cost in areas with both high incidence and high poverty to mitigate death rates.</li>
+        </ul>
+
+        <div class="subhead">Limitations</div>
+        <ul class="bullets">
+          <li>The data is an amalgamation of sources and some records were incomplete.</li>
+          <li>The data does not provide a holistic view of diagnoses.</li>
+          <li>The dataset is limited in its ability to capture socioeconomic indicators that are causal rather than correlated.</li>
+        </ul>
+      </div>
     </section>
   </main>
 </section>
@@ -208,7 +272,7 @@
     }
   }));
 
-  // Deep link support: #tab=2 or #regional-drivers, etc.
+  // Deep link support
   if (location.hash.startsWith('#tab=')) {
     const n = location.hash.split('=')[1];
     const target = document.getElementById('tab-' + n);
@@ -217,7 +281,6 @@
     const target = document.getElementById(idForSlug[location.hash.slice(1)]);
     if (target) activateTab(target.id);
   } else {
-    // Default to first tab
     activateTab('tab-1');
   }
 </script>
