@@ -38,7 +38,6 @@
   .btn{appearance:none;border:0;border-radius:999px;padding:.75rem 1.1rem;font-weight:600;cursor:pointer;transition:transform .06s ease, box-shadow .2s ease}
   .btn-primary{background:var(--rit-orange);color:white;box-shadow:0 6px 16px rgba(247,105,2,.25)}
   .btn-primary:hover{transform:translateY(-1px)}
-  .btn-ghost{background:transparent;color:var(--rit-orange)}
   .foot{max-width:1100px;margin:0 auto;padding:1rem;color:var(--rit-mid);font-size:.9rem}
 
   /* App shell */
@@ -50,17 +49,12 @@
   nav.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
   .tab{background:white;border:1px solid var(--rit-gray);border-radius:999px;padding:.5rem .9rem;cursor:pointer;font-weight:600}
   .tab[aria-selected="true"]{background:var(--rit-orange);border-color:var(--rit-orange);color:white}
-  .tab:focus-visible{box-shadow:0 0 0 3px rgba(247,105,2,.35)}
   main.app-main{max-width:1200px;margin:0 auto;padding:1rem}
-  .panel{background:white;border:1px solid var(--rit-gray);border-radius:16px;padding:1rem}
-  .panel h3{margin-top:0}
-  .viz{margin-bottom:.75rem}
-  tableau-viz{width:100%;height:70vh;border:0;border-radius:12px;display:block;background:white}
-  .note{color:var(--rit-mid);font-size:.95rem;line-height:1.5}
+  .panel{background:white;border:1px solid var(--rit-gray);border-radius:16px;padding:1rem;position:relative;overflow:hidden}
+  .viz{min-height:70vh;margin-bottom:1rem}
+  tableau-viz{width:100%;height:70vh;border:0;border-radius:12px;display:block;position:relative;z-index:0;background:white}
+  .note{color:var(--rit-mid);font-size:.95rem;line-height:1.5;position:relative;z-index:1}
   .kicker{font-size:.85rem;color:var(--rit-mid);text-transform:uppercase;letter-spacing:.06em}
-  /* small helpers */
-  .subhead{margin:.5rem 0 .25rem;font-weight:600}
-  .bullets{margin:.25rem 0 0 1.1rem}
 </style>
 </head>
 <body>
@@ -76,7 +70,7 @@
 
   <div class="hero">
     <span class="kicker">RRH incidence insights</span>
-    <h2>An exploration of cancer incidence and causes across the United States and New York</h2>
+    <h2>An exploration of cancer incidences and causes across the United States and New York</h2>
     <p>This site explores patterns for cancer incidence using interactive Tableau dashboards.</p>
     <div class="cta">
       <button id="start" class="btn btn-primary">Start presentation</button>
@@ -118,14 +112,7 @@
           hide-tabs>
         </tableau-viz>
       </div>
-      <div class="note">
-        <div class="subhead"></div>
-        <ul class="bullets">
-          <li>Select a state to view mean cancer incidence per 100,000 people.</li>
-          <li>Highest levels appear in the Northeastern United States, with outliers including Kentucky, Illinois, and Louisiana.</li>
-          <li>This visualization also appears in the Cancer Incidence Group Project.</li>
-        </ul>
-      </div>
+      <p class="note">Select a state to view mean cancer incidence per 100,000 people. The highest regions correspond with the Northeastern United States and outliers like Kentucky, Illinois, and Louisiana. This visualization also appears in the Cancer Incidence Group Project.</p>
     </section>
 
     <!-- Panel 2 -->
@@ -134,109 +121,57 @@
       <div class="viz">
         <tableau-viz
           id="viz-regional"
-          src="https://public.tableau.com/views/RegionalTrendFactors/RegionalTrendFactors"
+          data-src="https://public.tableau.com/views/RegionalTrendFactors/RegionalTrendFactors"
           toolbar="bottom"
           hide-tabs>
         </tableau-viz>
       </div>
-      <div class="note">
-        <div class="subhead"></div>
-        <ul class="bullets">
-          <li>A state-level map of incidence rate by region alongside death rate. Larger indicators represent higher death rates.</li>
-          <li>The map generally shows higher death rates where incidence is higher, such as in NY and PA, with some outliers at mid-level incidence like Iowa and Michigan.</li>
-          <li>Two correlation views relate income and poverty to death and incidence rates. Texas stands out with both high poverty and high death rate, and also with high median income and high incidence rate.</li>
-          <li>In both correlations, the Northeast appears in the upper-right quadrant, indicating a strong relationship with these factors.</li>
-          <li>A bar chart provides five-year trends by state and recent changes for context and Texas indicated that the trends were falling.</li>
-        </ul>
-      </div>
+      <p class="note">This dashboard explores where cancer occurs and why. A state-level map shows incidence rate by region alongside death rate, where larger indicators represent higher death rates. The correlation generally shows higher death rates where incidence is higher, such as in NY and PA, but some outliers still have a high death rate at middle-of-the-road incidence rates. Two correlation views relate income and poverty to death and incidence rates. Texas stands out with both high poverty and high death rate overall, as well as high median income and high incidence rate. In both correlations, the Northeast appears in the upper-right quadrant, indicating a strong relationship with these factors. For context, a bar chart shows the five-year trend among states and their recent trends.</p>
     </section>
 
     <!-- Panel 3 -->
     <section id="panel-3" class="panel" role="tabpanel" aria-labelledby="tab-3" hidden>
-      <h3>New York State focus</h3>
+      <h3>New York State Focus</h3>
       <div class="viz">
         <tableau-viz
           id="viz-ny"
-          src="https://public.tableau.com/views/Book1_17621227134700/Dashboard1"
+          data-src="https://public.tableau.com/views/Book1_17621227134700/Dashboard1"
           toolbar="bottom"
           hide-tabs>
         </tableau-viz>
       </div>
-     <div class="note">
-  <div class="subhead"></div>
-  <ul class="bullets">
-    <li>The county with the highest incidence is Suffolk County.</li>
-    <li>In the death rate vs poverty and the incidence rate vs median income charts, Suffolk County is at the top end of both.</li>
-    <li>It shows high poverty, high median income, high death rate, and high incidence rate. This is not dissimilar to how Texas reports.</li>
-    <li>Cancer treatments are costly, so one might expect higher income areas to have a lower death rate, but that is not the case here.</li>
-    <li>The data does not indicate whether treatments occurred before death, and it is unclear whether cancer cases are disproportionately concentrated in the high-poverty population.</li>
-    <li>Health professionals should further dissect the data to determine who is being affected socioeconomically, because the summary chart shows that the lower the median income, the lower the death rate.</li>
-  </ul>
-</div>
-
+      <p class="note">The county with the highest incidence is Suffolk County. Following that, in the next two charts, the death rate and poverty percentage are compared, as well as the incidence rate and the median income. Suffolk County is at the top end of both. It shows high poverty, high median income, high death rate, and high incidence rate, which is not dissimilar to how Texas reports. Often, cancer treatments are costly, so it is intuitive to expect higher-income areas to have a lower death rate, but that is not the case here. This is also a limitation in the data because we do not know whether treatments occurred before death or whether cancer cases apply disproportionately to the high-poverty population. Health professionals should further dissect the data to determine who is being affected socioeconomically, because the summary chart shows that the lower the median income, the lower the death rate.</p>
     </section>
 
     <!-- Panel 4 -->
     <section id="panel-4" class="panel" role="tabpanel" aria-labelledby="tab-4" hidden>
       <h3>Project Summary</h3>
-
-      <div class="note">
-        <div class="subhead">Challenges</div>
-        <ul class="bullets">
-          <li>Finding factors relevant to cancer rates without redundancy.</li>
-          <li>Preprocessing to clean and verify values, including removal of nulls.</li>
-        </ul>
-
-        <div class="subhead">Data sources</div>
-        <ul class="bullets">
-          <li>United States Cancer Statistics and public repositories.</li>
-          <li>U.S. Census population statistics.</li>
-        </ul>
-
-        <div class="subhead">What the dashboards provide</div>
-        <ul class="bullets">
-          <li>Clarity on relationships within the dataset.</li>
-          <li>A starting point for health professionals to decide how to approach this issue.</li>
-        </ul>
-
-        <div class="subhead">Key findings</div>
-        <ul class="bullets">
-          <li>Cancer incidence is highest in the Northeastern United States, with notable outliers such as Kentucky, Illinois, and Louisiana.</li>
-          <li>High-income areas are not immune to incidence and death rates, indicating that access to medical intervention does not always reduce incidences or deaths.</li>
-          <li>New York is surrounded by other high-incidence states and shows a distributed rate across counties.</li>
-        </ul>
-
-        <div class="subhead">Recommendations</div>
-        <ul class="bullets">
-          <li>Use these visualizations to target high-incidence areas for prevention.</li>
-          <li>Create more preventive healthcare opportunities at lower cost in areas with both high incidence and high poverty to mitigate death rates.</li>
-        </ul>
-
-        <div class="subhead">Limitations</div>
-        <ul class="bullets">
-          <li>The data is an amalgamation of sources and some records were incomplete.</li>
-          <li>The data does not provide a holistic view of diagnoses.</li>
-          <li>The dataset is limited in its ability to capture socioeconomic indicators that are causal rather than correlated.</li>
-        </ul>
-      </div>
+      <p class="note">The challenges in this project were finding factors relevant to cancer rates without redundancy. There was preprocessing to clean and verify values, including removing null values. The data was accumulated from United States Cancer Statistics and public repositories, as well as the U.S. Census for population statistics. The dashboards provide clarity on relationships within the dataset and a starting point for health professionals to decide how to approach this issue.</p>
+      <p class="note">Key findings: cancer incidence is highest in the Northeastern United States, with notable outliers such as Kentucky, Illinois, and Louisiana. High-income areas are not immune to cancer incidence and death rates, which indicates that access to medical intervention does not always reduce incidences or deaths. While New York is surrounded by other states that also have high cancer rates, it stands out with a distributed rate across counties.</p>
+      <p class="note">Recommendations: use these visualizations to target high-incidence areas for prevention. Areas with both high incidence and high poverty can expand preventive healthcare opportunities at lower cost to mitigate death rates.</p>
+      <p class="note">Limitations: the data is an amalgamation of sources and some of it is incomplete. It does not provide a holistic view of diagnoses. The dataset is also limited in its ability to capture socioeconomic indicators that are causal rather than merely correlated.</p>
     </section>
   </main>
 </section>
 
 <script>
-  // Show app when starting or when hash is present
   const cover = document.getElementById('cover');
   const app = document.getElementById('site');
   function showApp(){ cover.style.display = 'none'; app.style.display = 'block'; }
 
-  // Tab slug mapping for readable links
-  const slugFor = {
-    'tab-1':'national-overview',
-    'tab-2':'regional-drivers',
-    'tab-3':'new-york-focus',
-    'tab-4':'project-summary'
-  };
+  const slugFor = {'tab-1':'national-overview','tab-2':'regional-drivers','tab-3':'new-york-focus','tab-4':'project-summary'};
   const idForSlug = Object.fromEntries(Object.entries(slugFor).map(([k,v]) => [v,k]));
+
+  function ensureVizLoaded(panelNumber){
+    const el = document.querySelector(`#panel-${panelNumber} tableau-viz`);
+    if (!el) return;
+    if (!el.getAttribute('src') && el.dataset.src) {
+      el.setAttribute('src', el.dataset.src);
+    }
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+  }
 
   document.getElementById('start')?.addEventListener('click', () => {
     showApp();
@@ -247,7 +182,6 @@
     showApp();
   }
 
-  // Tabs: one panel visible
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
   const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
 
@@ -255,16 +189,16 @@
     tabs.forEach(t => t.setAttribute('aria-selected', String(t.id === tabId)));
     const targetPanelId = 'panel-' + tabId.split('-')[1];
     panels.forEach(p => { p.hidden = p.id !== targetPanelId; });
+    const n = tabId.split('-')[1];
+    ensureVizLoaded(n);
   }
 
-  // Click handlers with readable hashes
   tabs.forEach(t => t.addEventListener('click', () => {
     activateTab(t.id);
     const slug = slugFor[t.id] || ('tab=' + t.id.split('-')[1]);
     history.replaceState(null, '', '#' + slug);
   }));
 
-  // Keyboard support
   tabs.forEach((t, i) => t.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
       const dir = e.key === 'ArrowRight' ? 1 : -1;
@@ -277,7 +211,6 @@
     }
   }));
 
-  // Deep link support
   if (location.hash.startsWith('#tab=')) {
     const n = location.hash.split('=')[1];
     const target = document.getElementById('tab-' + n);
